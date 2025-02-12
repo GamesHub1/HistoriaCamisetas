@@ -18,15 +18,16 @@
         .navbar {
             width: 100%;
             background-color: rgba(0, 0, 0, 0.7);
-            padding: 5px 20px; /* Hicimos la barra más pequeña */
+            padding: 5px 20px; /* Barra más pequeña */
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: fixed;
+            position: absolute; /* Barra en su lugar inicial */
             top: 0;
             left: 0;
             z-index: 1000;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Añadimos sombra para mejor visibilidad */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra */
+            transition: top 0.3s ease-in-out; /* Añadimos transición para el efecto de ocultarse */
         }
         .navbar img {
             height: 30px; /* Ajustamos el tamaño del logo */
@@ -36,7 +37,7 @@
             font-size: 1em;
             border-radius: 10px;
             border: 1px solid #ccc;
-            width: 180px; /* Hicimos el buscador más pequeño */
+            width: 180px; /* Buscador más pequeño */
         }
         .sidebar {
             width: 180px;
@@ -45,9 +46,9 @@
             color: white;
             text-align: center;
             position: fixed;
-            top: 60px; /* Dejamos espacio debajo de la barra superior */
+            top: 60px; /* Dejamos espacio debajo de la barra */
             left: 0;
-            height: calc(100vh - 60px); /* Ajustamos el alto para que no cubra la barra superior */
+            height: calc(100vh - 60px); /* Ajustamos el alto */
             border-radius: 0 15px 15px 0;
             display: flex;
             flex-direction: column;
@@ -118,7 +119,7 @@
     </style>
 </head>
 <body>
-    <div class="navbar">
+    <div class="navbar" id="navbar">
         <img src="tu-logo.png" alt="Logo"> <!-- Cambia "tu-logo.png" por el nombre de tu archivo -->
         <input type="text" id="search" placeholder="Buscar camiseta...">
     </div>
@@ -145,6 +146,18 @@
         </div>
     </div>
     <script>
+        // Cuando hacemos scroll, la barra se fija en la parte superior
+        window.onscroll = function() {
+            var navbar = document.getElementById('navbar');
+            if (window.scrollY > 0) {
+                navbar.style.position = 'fixed';  // Se queda fija cuando hacemos scroll
+                navbar.style.top = '0';  // Mantiene la posición en la parte superior
+            } else {
+                navbar.style.position = 'absolute';  // Vuelve a su lugar original al estar arriba
+                navbar.style.top = '0';
+            }
+        };
+
         document.getElementById('search').addEventListener('input', function () {
             let searchValue = this.value.toLowerCase();
             document.querySelectorAll('.jersey').forEach(jersey => {
